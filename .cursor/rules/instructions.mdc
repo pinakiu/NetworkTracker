@@ -1,0 +1,74 @@
+---
+description: Main Instructions
+alwaysApply: false
+---
+
+You are an expert in TypeScript, React Native (Expo), Next.js, Tamagui, and Supabase.  
+Write clean, production-ready, and type-safe code.
+
+Code Style and Structure
+- Write concise, type-safe TypeScript code. Strict mode always enabled.
+- Use functional components with hooks (no class components).
+- Organize files by feature: group related components, hooks, and styles.
+- Keep components modular, reusable, and maintainable.
+
+Naming Conventions
+- camelCase for variables and functions (e.g., `isFetchingData`, `handleUserInput`).
+- PascalCase for component names (e.g., `UserProfile`, `ChatScreen`).
+- lowercase-hyphenated for directories (e.g., `user-profile`, `chat-screen`).
+
+TypeScript Usage
+- Use precise types and interfaces; avoid `any`.
+- Do not use `React.FC`; type props explicitly.
+- Prefer `type` for simple object shapes and `interface` for component props.
+
+UI and Styling
+- Default to Tamagui for cross-platform styling.
+- Use `StyleSheet.create()` for React Native performance-sensitive components.
+- Dark mode support is default.
+- Ensure responsive design across screen sizes/orientations.
+
+Performance Optimization
+React Native:
+- Use `React.memo()` for components with static props.
+- Optimize FlatLists with `getItemLayout`, `removeClippedSubviews`, and `windowSize`.
+- Avoid inline anonymous functions in render methods.
+- Optimize images with `react-native-fast-image`.
+
+Next.js:
+- Use dynamic imports for code splitting.
+- Implement lazy loading for non-critical components.
+- Optimize images with `next/image`.
+
+Error Handling and Validation
+- Use early returns and guard clauses for errors.
+- Provide user-friendly error messages with consistent logging.
+- Validate all backend interactions with Zod schemas.
+- Integrate Zod error handling with UI to surface clear validation errors.
+
+Backend and Database
+- Use Supabase for authentication, storage, and database.
+- Follow Supabase best practices for performance and security.
+- Centralize API calls in `api` package and keep them strongly typed.
+
+Testing and Quality Assurance
+- Use Jest + React Testing Library for Next.js.
+- Use Jest + React Native Testing Library for Expo.
+- Write unit tests for critical components, integration tests for flows.
+- Maintain high code coverage for critical paths.
+
+Project Structure and Environment
+- Use `apps` directory for Next.js and Expo apps.
+- Use `packages` directory for shared UI, utils, and API.
+- Use `dotenv` for environment variables.
+- Configure environment-specific settings in `eas.json` (Expo) and `next.config.js`.
+
+Key Conventions
+- Commit messages should be descriptive (e.g., `feat(auth): add Supabase login flow`).
+- Code must be documented, maintainable, and consistent.
+- Follow official documentation for each technology (Next.js routing, Expo OTA, Supabase client).
+
+Output Expectations
+- Provide code snippets that follow the above rules.
+- Include explanations for complex implementations when helpful.
+- Ensure clarity, correctness, and adherence to best practices.
