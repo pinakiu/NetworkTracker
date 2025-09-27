@@ -77,8 +77,8 @@ const sampleContacts: Contact[] = [
 ];
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<'events' | 'contacts' | 'contact-detail' | 'capture' | 'followup'>('events');
-  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+  const [currentScreen, setCurrentScreen] = useState<'contacts' | 'contact-detail' | 'capture' | 'followup'>('contacts');
+  const [selectedEventId, setSelectedEventId] = useState<string>(sampleEvents[0]?.id || '');
   const [selectedContactId, setSelectedContactId] = useState<string | null>(null);
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
   const [events, setEvents] = useState<Event[]>(sampleEvents);
@@ -89,8 +89,12 @@ export default function App() {
   const eventContacts = selectedEventId ? contacts.filter(c => c.eventId === selectedEventId) : [];
 
   const handleSelectEvent = (eventId: string) => {
+    if (eventId === 'add-new') {
+      // TODO: Handle add new event
+      return;
+    }
     setSelectedEventId(eventId);
-    setCurrentScreen('contacts');
+    setSelectedContactId(null);
   };
 
   const handleSelectContact = (contactId: string) => {
@@ -114,22 +118,16 @@ export default function App() {
       ));
     }
     
-    setCurrentScreen('events');
+    setCurrentScreen('contacts');
   };
 
   const handleUpdateContact = (updatedContact: Contact) => {
     setContacts(prev => prev.map(c => c.id === updatedContact.id ? updatedContact : c));
   };
 
-  const handleNavigate = (screen: 'events' | 'capture' | 'followup' | 'profile') => {
+  const handleNavigate = (screen: 'contacts' | 'capture' | 'followup' | 'profile') => {
     if (screen === 'profile') return; // Placeholder
     setCurrentScreen(screen);
-  };
-
-  const handleBackToEvents = () => {
-    setCurrentScreen('events');
-    setSelectedEventId(null);
-    setSelectedContactId(null);
   };
 
   const handleBackToContacts = () => {
@@ -149,20 +147,15 @@ export default function App() {
 
   const renderCurrentScreen = () => {
     switch (currentScreen) {
-      case 'events':
-        return (
-          <EventsScreen 
-            events={events}
-            onSelectEvent={handleSelectEvent}
-          />
-        );
       case 'contacts':
         return (
           <ContactsScreen
             event={selectedEvent}
             contacts={eventContacts}
             onSelectContact={handleSelectContact}
-            onBack={handleBackToEvents}
+            onBack={handleBackToContacts}
+            events={events}
+            onSelectEvent={handleSelectEvent}
           />
         );
       case 'contact-detail':
@@ -179,7 +172,7 @@ export default function App() {
           <ContactCaptureScreen
             events={events}
             onAddContact={handleAddContact}
-            onBack={editingContact ? handleBackFromEdit : () => setCurrentScreen('events')}
+            onBack={editingContact ? handleBackFromEdit : () => setCurrentScreen('contacts')}
             editContact={editingContact}
             onUpdateContact={handleUpdateContact}
           />

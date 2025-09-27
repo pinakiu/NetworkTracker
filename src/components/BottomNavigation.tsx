@@ -1,14 +1,14 @@
 import React from 'react';
-import { Calendar, Plus, CheckSquare, User } from 'lucide-react';
+import { Users, Plus, CheckSquare, User } from 'lucide-react';
 
 interface BottomNavigationProps {
   currentScreen: string;
-  onNavigate: (screen: 'events' | 'capture' | 'followup' | 'profile') => void;
+  onNavigate: (screen: 'contacts' | 'capture' | 'followup' | 'profile') => void;
 }
 
 export function BottomNavigation({ currentScreen, onNavigate }: BottomNavigationProps) {
   const navItems = [
-    { id: 'events', icon: Calendar, label: 'Events' },
+    { id: 'contacts', icon: Users, label: 'Contacts' },
     { id: 'capture', icon: Plus, label: 'Capture' },
     { id: 'followup', icon: CheckSquare, label: 'Follow-ups' },
     { id: 'profile', icon: User, label: 'Profile' }

@@ -1,8 +1,9 @@
 import React from 'react';
-import { ArrowLeft, User } from 'lucide-react';
+import { User, Plus } from 'lucide-react';
 import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import type { Event, Contact } from '../App';
 
 interface ContactsScreenProps {
@@ -10,9 +11,11 @@ interface ContactsScreenProps {
   contacts: Contact[];
   onSelectContact: (contactId: string) => void;
   onBack: () => void;
+  events: Event[];
+  onSelectEvent: (eventId: string) => void;
 }
 
-export function ContactsScreen({ event, contacts, onSelectContact, onBack }: ContactsScreenProps) {
+export function ContactsScreen({ event, contacts, onSelectContact, onBack, events, onSelectEvent }: ContactsScreenProps) {
   if (!event) return null;
 
   const getTagColor = (tag: string) => {
@@ -34,19 +37,32 @@ export function ContactsScreen({ event, contacts, onSelectContact, onBack }: Con
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="p-4 pb-3 safe-area-top">
-        <div className="flex items-center gap-3 mb-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onBack}
-            className="p-2 hover:bg-accent active:bg-accent/70"
+        <div className="mb-4">
+          <h1 className="mb-3">Contacts</h1>
+          <Select 
+            value={event.id} 
+            onValueChange={onSelectEvent}
           >
-            <ArrowLeft className="w-5 h-5" />
-          </Button>
-          <h1 className="flex-1 truncate">{event.name}</h1>
+            <SelectTrigger className="h-12 bg-input border-border">
+              <SelectValue placeholder="Select event" />
+            </SelectTrigger>
+            <SelectContent>
+              {events.map((event) => (
+                <SelectItem key={event.id} value={event.id}>
+                  {event.name}
+                </SelectItem>
+              ))}
+              <SelectItem value="add-new" className="text-cta">
+                <div className="flex items-center gap-2">
+                  <Plus className="w-4 h-4" />
+                  Add New Event
+                </div>
+              </SelectItem>
+            </SelectContent>
+          </Select>
         </div>
         <p className="text-muted-foreground">
-          {contacts.length} contact{contacts.length !== 1 ? 's' : ''}
+          {contacts.length} contact{contacts.length !== 1 ? 's' : ''} captured
         </p>
       </div>
 
