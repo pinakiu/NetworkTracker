@@ -5,6 +5,7 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Card } from './ui/card';
 import { Badge } from './ui/badge';
+import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import type { Event, Contact } from '../App';
 
@@ -25,7 +26,8 @@ export function ContactCaptureScreen({ events, onAddContact, onBack, editContact
     role: editContact?.role || '',
     eventId: editContact?.eventId || events[0]?.id || '',
     tags: editContact?.tags || [],
-    needsFollowup: editContact?.needsFollowup || false
+    needsFollowup: editContact?.needsFollowup || false,
+    notes: editContact?.notes || ''
   });
   const [isRecording, setIsRecording] = useState(false);
 
@@ -68,7 +70,8 @@ export function ContactCaptureScreen({ events, onAddContact, onBack, editContact
         role: formData.role.trim(),
         eventId: formData.eventId,
         tags: formData.tags,
-        needsFollowup: formData.needsFollowup
+        needsFollowup: formData.needsFollowup,
+        notes: formData.notes.trim()
       };
       onUpdateContact(updatedContact);
     } else {
@@ -80,7 +83,8 @@ export function ContactCaptureScreen({ events, onAddContact, onBack, editContact
         eventId: formData.eventId,
         tags: formData.tags,
         needsFollowup: formData.needsFollowup,
-        followupDone: false
+        followupDone: false,
+        notes: formData.notes.trim()
       };
       onAddContact(contact);
     }
@@ -202,6 +206,17 @@ export function ContactCaptureScreen({ events, onAddContact, onBack, editContact
                 </Badge>
               ))}
             </div>
+          </div>
+
+          {/* Notes */}
+          <div className="space-y-2">
+            <Label className="text-sm">Notes</Label>
+            <Textarea
+              value={formData.notes}
+              onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+              placeholder="Add any additional notes about this contact..."
+              className="min-h-[80px] bg-input border-border resize-none"
+            />
           </div>
 
           {/* Voice Note - At the bottom */}

@@ -18,6 +18,7 @@ export interface Contact {
   needsFollowup: boolean;
   followupDone: boolean;
   eventId: string;
+  notes?: string;
 }
 
 export interface Event {
@@ -52,7 +53,8 @@ const sampleContacts: Contact[] = [
     tags: ['Mentor', 'Job Lead'],
     needsFollowup: true,
     followupDone: false,
-    eventId: '1'
+    eventId: '1',
+    notes: 'Very knowledgeable about React and Node.js. Great potential mentor for junior developers.'
   },
   {
     id: '2',
@@ -62,7 +64,8 @@ const sampleContacts: Contact[] = [
     tags: ['Interesting', 'Follow-up'],
     needsFollowup: true,
     followupDone: true,
-    eventId: '1'
+    eventId: '1',
+    notes: 'Great conversation about product management at startups. Mentioned they\'re hiring for a senior PM role.'
   },
   {
     id: '3',
@@ -72,7 +75,8 @@ const sampleContacts: Contact[] = [
     tags: ['Job Lead'],
     needsFollowup: true,
     followupDone: false,
-    eventId: '2'
+    eventId: '2',
+    notes: 'Interested in our company\'s growth stage. Follow up with job description and company overview.'
   }
 ];
 

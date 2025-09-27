@@ -127,6 +127,18 @@ export function ContactDetailScreen({ contact, onBack, onUpdateContact, onEditCo
             </Card>
           )}
 
+          {/* Notes */}
+          {contact.notes && (
+            <Card className="p-4 border-border bg-card">
+              <h3 className="mb-3">Notes</h3>
+              <div className="bg-muted rounded-lg p-3">
+                <p className="text-sm text-foreground">
+                  {contact.notes}
+                </p>
+              </div>
+            </Card>
+          )}
+
           {/* Additional Text for Sarah Chen */}
           {contact.name === 'Sarah Chen' && (
             <Card className="p-4 border-border bg-card">
