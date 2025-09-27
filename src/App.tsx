@@ -80,6 +80,7 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState<'events' | 'contacts' | 'contact-detail' | 'capture' | 'followup'>('events');
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [selectedContactId, setSelectedContactId] = useState<string | null>(null);
+  const [editingContact, setEditingContact] = useState<Contact | null>(null);
   const [events, setEvents] = useState<Event[]>(sampleEvents);
   const [contacts, setContacts] = useState<Contact[]>(sampleContacts);
 
@@ -136,6 +137,16 @@ export default function App() {
     setSelectedContactId(null);
   };
 
+  const handleEditContact = (contact: Contact) => {
+    setEditingContact(contact);
+    setCurrentScreen('capture');
+  };
+
+  const handleBackFromEdit = () => {
+    setEditingContact(null);
+    setCurrentScreen('contact-detail');
+  };
+
   const renderCurrentScreen = () => {
     switch (currentScreen) {
       case 'events':
@@ -160,6 +171,7 @@ export default function App() {
             contact={selectedContact}
             onBack={handleBackToContacts}
             onUpdateContact={handleUpdateContact}
+            onEditContact={handleEditContact}
           />
         );
       case 'capture':
@@ -167,7 +179,9 @@ export default function App() {
           <ContactCaptureScreen
             events={events}
             onAddContact={handleAddContact}
-            onBack={() => setCurrentScreen('events')}
+            onBack={editingContact ? handleBackFromEdit : () => setCurrentScreen('events')}
+            editContact={editingContact}
+            onUpdateContact={handleUpdateContact}
           />
         );
       case 'followup':

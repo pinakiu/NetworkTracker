@@ -9,9 +9,10 @@ interface ContactDetailScreenProps {
   contact: Contact | null;
   onBack: () => void;
   onUpdateContact: (contact: Contact) => void;
+  onEditContact: (contact: Contact) => void;
 }
 
-export function ContactDetailScreen({ contact, onBack, onUpdateContact }: ContactDetailScreenProps) {
+export function ContactDetailScreen({ contact, onBack, onUpdateContact, onEditContact }: ContactDetailScreenProps) {
   if (!contact) return null;
 
   const getTagColor = (tag: string) => {
@@ -100,8 +101,77 @@ export function ContactDetailScreen({ contact, onBack, onUpdateContact }: Contac
             </div>
           </Card>
 
-          {/* Audio Note */}
-          {contact.audioUrl && (
+          {/* Screenshot for Michael Rodriguez */}
+          {contact.name === 'Michael Rodriguez' && (
+            <Card className="p-4 border-border bg-card">
+              <h3 className="mb-3">Screenshot</h3>
+              <div className="bg-muted rounded-lg p-4 text-center">
+                <div className="w-full h-32 bg-background border-2 border-dashed border-border rounded flex items-center justify-center">
+                  <span className="text-muted-foreground text-sm">Screenshot placeholder</span>
+                </div>
+                <p className="text-sm text-muted-foreground mt-2">Business card or LinkedIn profile</p>
+              </div>
+            </Card>
+          )}
+
+          {/* Additional Text for Michael Rodriguez */}
+          {contact.name === 'Michael Rodriguez' && (
+            <Card className="p-4 border-border bg-card">
+              <h3 className="mb-3">Additional Notes</h3>
+              <div className="bg-muted rounded-lg p-3">
+                <p className="text-sm text-foreground">
+                  "Great conversation about product management at startups. Mentioned they're hiring for a senior PM role. 
+                  Interested in our company's growth stage. Follow up with job description and company overview."
+                </p>
+              </div>
+            </Card>
+          )}
+
+          {/* Additional Text for Sarah Chen */}
+          {contact.name === 'Sarah Chen' && (
+            <Card className="p-4 border-border bg-card">
+              <h3 className="mb-3">Additional Notes</h3>
+              <div className="bg-muted rounded-lg p-3">
+                <p className="text-sm text-foreground">
+                  "Senior engineer with 8+ years experience. Very knowledgeable about React and Node.js. 
+                  Mentioned she's looking for mentorship opportunities and might be interested in a senior role. 
+                  Great potential mentor for junior developers."
+                </p>
+              </div>
+            </Card>
+          )}
+
+          {/* Audio Note for Sarah Chen */}
+          {contact.name === 'Sarah Chen' && (
+            <Card className="p-4 border-border bg-card">
+              <h3 className="mb-3">Voice Note</h3>
+              <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="p-2 border-cta/30 hover:bg-cta/10 active:bg-cta/20"
+                >
+                  <Play className="w-4 h-4 text-cta" />
+                </Button>
+                <div className="flex-1 h-8 bg-background rounded flex items-center px-3">
+                  <div className="flex gap-1 items-center">
+                    {Array.from({ length: 12 }).map((_, i) => (
+                      <div 
+                        key={i}
+                        className={`w-1 bg-cta rounded-full ${
+                          i < 5 ? 'h-6' : i < 8 ? 'h-4' : 'h-3'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <span className="text-sm text-muted-foreground">2:15</span>
+              </div>
+            </Card>
+          )}
+
+          {/* Audio Note for other contacts */}
+          {contact.audioUrl && contact.name !== 'Sarah Chen' && (
             <Card className="p-4 border-border bg-card">
               <h3 className="mb-3">Voice Note</h3>
               <div className="flex items-center gap-3 p-3 bg-muted rounded-lg">
@@ -152,6 +222,7 @@ export function ContactDetailScreen({ contact, onBack, onUpdateContact }: Contac
       <div className="p-4 pt-4 space-y-3 safe-area-bottom">
         <Button
           variant="outline"
+          onClick={() => onEditContact(contact)}
           className="w-full h-12 border-border hover:bg-accent active:bg-accent/70"
         >
           <Edit3 className="w-4 h-4 mr-2" />

@@ -12,18 +12,20 @@ interface ContactCaptureScreenProps {
   events: Event[];
   onAddContact: (contact: Omit<Contact, 'id'>) => void;
   onBack: () => void;
+  editContact?: Contact;
+  onUpdateContact?: (contact: Contact) => void;
 }
 
 const availableTags = ['Job Lead', 'Mentor', 'Interesting', 'Follow-up'];
 
-export function ContactCaptureScreen({ events, onAddContact, onBack }: ContactCaptureScreenProps) {
+export function ContactCaptureScreen({ events, onAddContact, onBack, editContact, onUpdateContact }: ContactCaptureScreenProps) {
   const [formData, setFormData] = useState({
-    name: '',
-    company: '',
-    role: '',
-    eventId: events[0]?.id || '',
-    tags: [] as string[],
-    needsFollowup: false
+    name: editContact?.name || '',
+    company: editContact?.company || '',
+    role: editContact?.role || '',
+    eventId: editContact?.eventId || events[0]?.id || '',
+    tags: editContact?.tags || [],
+    needsFollowup: editContact?.needsFollowup || false
   });
   const [isRecording, setIsRecording] = useState(false);
 
@@ -57,17 +59,31 @@ export function ContactCaptureScreen({ events, onAddContact, onBack }: ContactCa
       return;
     }
 
-    const contact: Omit<Contact, 'id'> = {
-      name: formData.name.trim(),
-      company: formData.company.trim(),
-      role: formData.role.trim(),
-      eventId: formData.eventId,
-      tags: formData.tags,
-      needsFollowup: formData.needsFollowup,
-      followupDone: false
-    };
-
-    onAddContact(contact);
+    if (editContact && onUpdateContact) {
+      // Update existing contact
+      const updatedContact: Contact = {
+        ...editContact,
+        name: formData.name.trim(),
+        company: formData.company.trim(),
+        role: formData.role.trim(),
+        eventId: formData.eventId,
+        tags: formData.tags,
+        needsFollowup: formData.needsFollowup
+      };
+      onUpdateContact(updatedContact);
+    } else {
+      // Add new contact
+      const contact: Omit<Contact, 'id'> = {
+        name: formData.name.trim(),
+        company: formData.company.trim(),
+        role: formData.role.trim(),
+        eventId: formData.eventId,
+        tags: formData.tags,
+        needsFollowup: formData.needsFollowup,
+        followupDone: false
+      };
+      onAddContact(contact);
+    }
   };
 
   const toggleRecording = () => {
@@ -90,7 +106,7 @@ export function ContactCaptureScreen({ events, onAddContact, onBack }: ContactCa
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1>Add Contact</h1>
+          <h1>{editContact ? 'Edit Contact' : 'Add Contact'}</h1>
         </div>
         <p className="text-muted-foreground">
           Capture contact details quickly
@@ -102,7 +118,7 @@ export function ContactCaptureScreen({ events, onAddContact, onBack }: ContactCa
         <div className="space-y-4 pb-4">
           {/* Photo Upload - At the top */}
           <Card className="p-3 border-border bg-card">
-            <Label className="mb-2 block text-sm">Photo</Label>
+            <Label className="mb-1 block text-sm">Photo</Label>
             <Button
               variant="outline"
               className="w-full h-16 border-dashed border-border hover:bg-accent active:bg-accent/70"
@@ -227,7 +243,7 @@ export function ContactCaptureScreen({ events, onAddContact, onBack }: ContactCa
           disabled={!canSave}
           className="w-full h-12 bg-cta hover:bg-cta/90 active:bg-cta/80 text-cta-foreground disabled:bg-muted disabled:text-muted-foreground"
         >
-          Save Contact
+          {editContact ? 'Update Contact' : 'Save Contact'}
         </Button>
       </div>
     </div>
