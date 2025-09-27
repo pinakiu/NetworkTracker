@@ -4,6 +4,7 @@ import { ContactsScreen } from './components/ContactsScreen';
 import { ContactDetailScreen } from './components/ContactDetailScreen';
 import { ContactCaptureScreen } from './components/ContactCaptureScreen';
 import { FollowupDashboard } from './components/FollowupDashboard';
+import { ProfileScreen } from './components/ProfileScreen';
 import { BottomNavigation } from './components/BottomNavigation';
 
 // Types
@@ -81,7 +82,7 @@ const sampleContacts: Contact[] = [
 ];
 
 export default function App() {
-  const [currentScreen, setCurrentScreen] = useState<'contacts' | 'contact-detail' | 'capture' | 'followup'>('contacts');
+  const [currentScreen, setCurrentScreen] = useState<'contacts' | 'contact-detail' | 'capture' | 'followup' | 'profile'>('contacts');
   const [selectedEventId, setSelectedEventId] = useState<string>(sampleEvents[0]?.id || '');
   const [selectedContactId, setSelectedContactId] = useState<string | null>(null);
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
@@ -130,7 +131,6 @@ export default function App() {
   };
 
   const handleNavigate = (screen: 'contacts' | 'capture' | 'followup' | 'profile') => {
-    if (screen === 'profile') return; // Placeholder
     setCurrentScreen(screen);
   };
 
@@ -188,6 +188,12 @@ export default function App() {
             events={events}
             onUpdateContact={handleUpdateContact}
             onSelectContact={handleSelectContact}
+          />
+        );
+      case 'profile':
+        return (
+          <ProfileScreen
+            onBack={() => setCurrentScreen('contacts')}
           />
         );
       default:
