@@ -78,7 +78,7 @@ export function ContactCaptureScreen({ events, onAddContact, onBack }: ContactCa
   const canSave = formData.name.trim() && formData.company.trim() && formData.role.trim();
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full max-h-[calc(100vh-80px)]">
       {/* Header */}
       <div className="p-4 pb-3 safe-area-top">
         <div className="flex items-center gap-3 mb-4">
@@ -99,15 +99,29 @@ export function ContactCaptureScreen({ events, onAddContact, onBack }: ContactCa
 
       {/* Form */}
       <div className="flex-1 px-4 overflow-y-auto">
-        <div className="space-y-6 pb-24">
+        <div className="space-y-4 pb-4">
+          {/* Photo Upload - At the top */}
+          <Card className="p-3 border-border bg-card">
+            <Label className="mb-2 block text-sm">Photo</Label>
+            <Button
+              variant="outline"
+              className="w-full h-16 border-dashed border-border hover:bg-accent active:bg-accent/70"
+            >
+              <div className="flex flex-col items-center gap-1">
+                <Camera className="w-5 h-5 text-muted-foreground" />
+                <span className="text-muted-foreground text-sm">Add Photo</span>
+              </div>
+            </Button>
+          </Card>
+
           {/* Event Selection */}
           <div className="space-y-2">
-            <Label>Event</Label>
+            <Label className="text-sm">Event</Label>
             <Select 
               value={formData.eventId} 
               onValueChange={(value) => setFormData(prev => ({ ...prev, eventId: value }))}
             >
-              <SelectTrigger className="h-12 bg-input border-border">
+              <SelectTrigger className="h-10 bg-input border-border">
                 <SelectValue placeholder="Select event" />
               </SelectTrigger>
               <SelectContent>
@@ -121,47 +135,47 @@ export function ContactCaptureScreen({ events, onAddContact, onBack }: ContactCa
           </div>
 
           {/* Basic Info */}
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div className="space-y-2">
-              <Label>Name</Label>
+              <Label className="text-sm">Name</Label>
               <Input
                 value={formData.name}
                 onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                 placeholder="Enter contact's name"
-                className="h-12 bg-input border-border"
+                className="h-10 bg-input border-border"
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Company</Label>
+              <Label className="text-sm">Company</Label>
               <Input
                 value={formData.company}
                 onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
                 placeholder="Enter company name"
-                className="h-12 bg-input border-border"
+                className="h-10 bg-input border-border"
               />
             </div>
 
             <div className="space-y-2">
-              <Label>Role</Label>
+              <Label className="text-sm">Role</Label>
               <Input
                 value={formData.role}
                 onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
                 placeholder="Enter job title"
-                className="h-12 bg-input border-border"
+                className="h-10 bg-input border-border"
               />
             </div>
           </div>
 
           {/* Tags */}
-          <div className="space-y-3">
-            <Label>Tags</Label>
+          <div className="space-y-2">
+            <Label className="text-sm">Tags</Label>
             <div className="flex flex-wrap gap-2">
               {availableTags.map((tag) => (
                 <Badge
                   key={tag}
                   variant="outline"
-                  className={`cursor-pointer px-3 py-2 text-sm transition-colors ${
+                  className={`cursor-pointer px-2 py-1 text-xs transition-colors ${
                     formData.tags.includes(tag)
                       ? getTagColor(tag)
                       : 'border-border hover:bg-accent'
@@ -174,46 +188,32 @@ export function ContactCaptureScreen({ events, onAddContact, onBack }: ContactCa
             </div>
           </div>
 
-          {/* Photo Upload */}
-          <Card className="p-4 border-border bg-card">
-            <Label className="mb-3 block">Photo</Label>
-            <Button
-              variant="outline"
-              className="w-full h-24 border-dashed border-border hover:bg-accent active:bg-accent/70"
-            >
-              <div className="flex flex-col items-center gap-2">
-                <Camera className="w-6 h-6 text-muted-foreground" />
-                <span className="text-muted-foreground">Add Photo</span>
-              </div>
-            </Button>
-          </Card>
-
-          {/* Voice Note */}
-          <Card className="p-4 border-border bg-card">
-            <Label className="mb-3 block">Voice Note</Label>
+          {/* Voice Note - At the bottom */}
+          <Card className="p-3 border-border bg-card">
+            <Label className="mb-1 block text-sm">Voice Note</Label>
             <Button
               variant="outline"
               onClick={toggleRecording}
-              className={`w-full h-16 transition-colors ${
+              className={`w-full h-12 transition-colors ${
                 isRecording 
                   ? 'bg-destructive/10 border-destructive/30 text-destructive hover:bg-destructive/20 active:bg-destructive/30' 
                   : 'border-border hover:bg-accent active:bg-accent/70'
               }`}
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 {isRecording ? (
-                  <MicOff className="w-6 h-6" />
+                  <MicOff className="w-5 h-5" />
                 ) : (
-                  <Mic className="w-6 h-6" />
+                  <Mic className="w-5 h-5" />
                 )}
-                <span>
+                <span className="text-sm">
                   {isRecording ? 'Stop Recording' : 'Record Voice Note'}
                 </span>
               </div>
             </Button>
             {isRecording && (
-              <div className="mt-3 text-center">
-                <span className="text-destructive text-sm">● Recording...</span>
+              <div className="mt-2 text-center">
+                <span className="text-destructive text-xs">● Recording...</span>
               </div>
             )}
           </Card>
@@ -221,7 +221,7 @@ export function ContactCaptureScreen({ events, onAddContact, onBack }: ContactCa
       </div>
 
       {/* Save Button */}
-      <div className="p-4 pt-4 safe-area-bottom">
+      <div className="px-4 pt-4 pb-4 safe-area-bottom">
         <Button
           onClick={handleSubmit}
           disabled={!canSave}
